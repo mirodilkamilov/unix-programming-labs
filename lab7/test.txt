@@ -1,0 +1,4 @@
+Main process should start two child processes.
+1st child process opens text file, read data from this file and using IPC mechanism send data to 2nd process.
+2nd process receive data from 1st process, next capitalize all characters and save it to another file.
+
