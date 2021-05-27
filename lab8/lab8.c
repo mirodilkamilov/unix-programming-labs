@@ -39,17 +39,17 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
+    sembuf[0].sem_num = 0;
+    sembuf[0].sem_flg = SEM_UNDO;
+    sembuf[1].sem_num = 1;
+    sembuf[1].sem_flg = SEM_UNDO;
+
     if (fork() == 0) {
 /*----------------------------------------------------------
     Process A
 ----------------------------------------------------------*/
         semctl(semid, 0, SETVAL, 1);
         semctl(semid, 1, SETVAL, 0);
-
-        sembuf[0].sem_num = 0;
-        sembuf[0].sem_flg = SEM_UNDO;
-        sembuf[1].sem_num = 1;
-        sembuf[1].sem_flg = SEM_UNDO;
 
         for (int i = 0; i < 3; ++i) {
             sembuf[0].sem_op = -1;
@@ -68,11 +68,6 @@ int main() {
 /*----------------------------------------------------------
     Process B
 ----------------------------------------------------------*/
-        sembuf[0].sem_num = 0;
-        sembuf[0].sem_flg = SEM_UNDO;
-        sembuf[1].sem_num = 1;
-        sembuf[1].sem_flg = SEM_UNDO;
-
         for (int i = 0; i < 3; ++i) {
             sembuf[1].sem_op = -1;
             semop(semid, &sembuf[1], 1);
